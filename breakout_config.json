@@ -11,14 +11,14 @@
 			"name": "a_screen_color",
 			"format": "color",
 			"usage": ["COLOR_ATTACHMENT"],
-			"multisampled": false,
+			"multisamples": 1,
 			"is_swapchain_image": true
 		},
 		{
 			"name": "a_depth",
 			"format": "depth",
 			"usage": ["DEPTH_STENCIL_ATTACHMENT"],
-			"multisampled": false
+			"multisamples": 1
 		}
 	],
 	"renderpasses":
@@ -52,6 +52,7 @@
 			[
 				{
 					"name": "sp_first_subpass",
+					"multisamples": 1,
 					"color_attachments":
 					[
 						{
