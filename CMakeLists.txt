@@ -32,7 +32,7 @@ if(NOT Log_POPULATED)
 endif()
 
 list(APPEND SOURCES
-	src/main.cpp
+	src/cpp/main.cpp
 )
 
 add_executable(breakout ${SOURCES})
