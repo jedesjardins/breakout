@@ -1,0 +1,153 @@
+{
+	"window_name": "Breakout Window",
+	"dynamic_vertex_buffer_size": 1024,
+	"dynamic_index_buffer_size": 1024,
+	"staging_buffer_size": 1024,
+	"max_updated_objects": 7,
+	"max_deleted_objects": 4,
+	"attachments":
+	[
+		{
+			"name": "a_screen_color",
+			"format": "color",
+			"usage": ["COLOR_ATTACHMENT"],
+			"multisampled": false,
+			"is_swapchain_image": true
+		},
+		{
+			"name": "a_depth",
+			"format": "depth",
+			"usage": ["DEPTH_STENCIL_ATTACHMENT"],
+			"multisampled": false
+		}
+	],
+	"renderpasses":
+	[
+		{
+			"name": "rp_main_render_pass",
+			"framebuffer":
+			[
+				{
+					"attachment_name": "a_screen_color",
+					"load_op": "CLEAR",
+					"store_op": "STORE",
+					"initial_layout": "UNDEFINED",
+					"final_layout": "PRESENT_SRC_KHR",
+					"clear_value": {
+						"color": [0, 0, 0, 1]
+					}
+				},
+				{
+					"attachment_name": "a_depth",
+					"load_op": "CLEAR",
+					"store_op": "DONT_CARE",
+					"initial_layout": "UNDEFINED",
+					"final_layout": "DEPTH_STENCIL_ATTACHMENT_OPTIMAL",
+					"clear_value": {
+						"depth_stencil": [1, 0]
+					}
+				}
+			],
+			"subpasses":
+			[
+				{
+					"name": "sp_first_subpass",
+					"color_attachments":
+					[
+						{
+							"attachment_name": "a_screen_color",
+							"layout": "COLOR_ATTACHMENT_OPTIMAL"
+						}
+					],
+					"depth_stencil_attachment":
+					{
+						"attachment_name": "a_depth",
+						"layout": "DEPTH_STENCIL_ATTACHMENT_OPTIMAL"
+					}
+				}
+			],
+			"subpass_dependencies":
+			[
+				{
+					"src_subpass": "EXTERNAL_SUBPASS",
+					"dst_subpass": 0,
+					"src_stage_mask": ["COLOR_ATTACHMENT_OUTPUT"],
+					"dst_stage_mask": ["COLOR_ATTACHMENT_OUTPUT"],
+					"dst_access_mask":
+					[
+						"COLOR_ATTACHMENT_READ",
+						"COLOR_ATTACHMENT_WRITE"
+					]
+				}
+			]
+		}
+	],
+	"renderpass_order": [
+		"rp_main_render_pass"
+	],
+	"shaders":
+	[
+		{
+			"name": "s_vertex_shader",
+			"file": "shaders/pos_vert.spv"
+		},
+		{
+			"name": "s_fragment_shader",
+			"file": "shaders/pos_frag.spv"
+		}
+	],
+	"uniform_layouts":
+	[
+		{
+			"name": "ul_camera_matrix",
+			"binding": 0,
+			"descriptor_type": "UNIFORM_BUFFER_DYNAMIC",
+			"descriptor_count": 1,
+			"stage": ["VERTEX"],
+			"max_count": 8
+		}
+	],
+	"push_constants":
+	[
+		{
+			"name": "pc_model_matrix",
+			"stage": ["VERTEX"],
+			"offset": 0,
+			"size": 64
+		}
+	],
+	"vertex_bindings":
+	[
+		{
+			"name": "vb_pos",
+			"binding_slot": 0,
+			"stride": 12,
+			"input_rate": "PER_VERTEX"
+		}
+	],
+	"vertex_attributes":
+	[
+		{
+			"name": "va_pos",
+			"vertex_binding_name": "vb_pos_color",
+			"location": 0,
+			"format": "R32G32B32_SFLOAT",
+			"offset": 0
+		}
+	],
+	"pipelines":
+	[
+		{
+			"name": "white_box_shader",
+			"vertex_shader_name": "s_vertex_shader",
+			"fragment_shader_name": "s_fragment_shader",
+			"vertex_bindings": ["vb_pos"],
+			"vertex_attributes": ["va_pos"],
+			"uniform_layouts": ["ul_camera_matrix"],
+			"push_constants": ["pc_model_matrix"],
+			"renderpass": "rp_main_render_pass",
+			"subpass": "sp_first_subpass",
+			"max_drawn_objects": 65
+		}
+	]
+}
